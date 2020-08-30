@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+rustup component add rustfmt
+rustup component add clippy
+cargo install cargo-audit
+cargo install wasm-pack
+cargo install twiggy
+cargo install cargo-watch

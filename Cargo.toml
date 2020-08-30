@@ -1,0 +1,66 @@
+[package]
+name = "personal-site"
+version = "0.1.0"
+authors = ["Diego Veralli <diego@diegoveralli.com>"]
+license = "GPL-3.0"
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dev-dependencies]
+proptest = "0.10.*"
+
+[dependencies]
+yew = "0.17.*"
+wasm-bindgen = "0.2"
+wee_alloc = "0.4.5"
+text_io = "0.1.*"
+percent-encoding = "*"
+unidecode = "0.3.*"
+
+[dependencies.js-sys]
+version = "0.3"
+default-features = false
+
+[dependencies.web-sys]
+version = "0.3"
+default-features = false
+features = [
+  'HtmlCanvasElement',
+  'WebGlBuffer',
+  'WebGlProgram',
+  'WebGlRenderingContext',
+  'WebGlShader',
+  'WebGlUniformLocation',
+  'Document',
+  'Element',
+  'HtmlHeadElement',
+  'HtmlStyleElement',
+  'HtmlElement',
+  'HtmlCollection',
+  'Performance',
+  'DomRect',
+  'Range',
+]
+
+[dependencies.anyhow]
+version = "1"
+default-features = false
+
+[dependencies.serde]
+version = "1.0.115"
+default-features = false
+
+[dependencies.url]
+version = "2.*.*"
+default-features = false
+
+[profile.release]
+panic = 'abort' 
+codegen-units = 1
+opt-level = 'z'
+lto = true
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = ['--strip-debug', '--strip-dwarf', '-Os']

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loading...</title>
+    <link rel="stylesheet" href="normalize.css"></link>
+    <link rel="stylesheet" href="holiday.css"></link>
+    <link rel="stylesheet" href="site.css"></link>
+    <link rel="icon" type="image/png" sizes="196x196" href="favicon-196.png">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <script type="module">
+      setTimeout(function() {
+        var element = document.getElementById('no-wasm');
+        if (element) {
+          element.style.display = null;
+          document.title = "No wasm?";
+        }
+      }, 3000);
+    </script>
+
+    <script type="module">
+      import init from "./wasm.js"
+      init();
+    </script>
+
+  </head>
+  <body>
+    <main id="no-wasm" style="display:none">
+      If this page doesn't update, your browser might not support webassembly
+    </main>
+  </body>
+</html>

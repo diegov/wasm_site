@@ -1,0 +1,93 @@
+@charset "utf-8";
+
+ul {
+    padding: 0px;
+    list-style-position: outside;
+    list-style: none;
+}
+
+ul li::before {
+    content: "▶";
+    top: -0.1em;
+    right: 0.4em;
+    position: relative;
+}
+
+h1 {
+    margin-bottom: 0.5em;
+}
+
+li a {
+    text-transform: capitalize;
+}
+
+li.removed {
+    animation: 0.25s cubic-bezier(0.5, -0.05, 0.9, 0.95) 0s 1 normal forwards running removed-animation;
+    transform-origin: 6.5em 100%;
+    padding: 0px;
+    margin: 0px;
+    height: 0px;
+    position: fixed;
+}
+
+aside.removed {
+    display: none;
+}
+
+@keyframes removed-animation {
+    0% {
+        opacity: 1;
+        transform: rotateZ(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(7.5em) rotateZ(75deg);
+    }
+}
+
+main {
+    padding-bottom: 4em;
+}
+
+aside {
+    position: absolute;
+    top: 3vw;
+
+    /* This works great in Firefox, not in Webkit browsers which will rotate the text but not the button. */
+    /* 
+       left: 70vw;
+       writing-mode: vertical-lr;
+   */
+    transform: rotateZ(90deg);
+    transform-origin: 0% 0%;
+    width: max-content;
+    left: 100vw;
+    
+    text-transform: uppercase;
+    text-shadow: rgb(44, 136, 152) 0.075em 0.1em;
+}
+
+footer {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    background-color: rgb(219, 219, 219);
+    z-index: 10;
+}
+
+footer a {
+    color: rgb(35, 109, 122);
+}
+
+canvas {
+    width: 100%;
+    cursor: none;
+}
+
+@media (min-width: 685px) {
+    button {
+        font-size: 80%;
+    }
+}

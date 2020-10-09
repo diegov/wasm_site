@@ -3,6 +3,8 @@ name = "personal-site"
 version = "0.1.0"
 authors = ["Diego Veralli <diego@diegoveralli.com>"]
 license = "GPL-3.0"
+description = "A silly personal site built with Yew.rs"
+repository = "https://github.com/diegov/wasm_site"
 edition = "2018"
 
 [lib]

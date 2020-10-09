@@ -1,0 +1,26 @@
+name: Rust
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+  DEBIAN_FRONTEND: noninteractive
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: jetli/wasm-pack-action@v0.3.0
+      with:
+        version: 'v0.9.1'
+    - run: rustup component add rustfmt
+    - run: rustup component add clippy
+    - run: sudo apt-get install -y --no-install-recommends jq
+    - name: Build
+      run: ./build.sh check

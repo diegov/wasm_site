@@ -22,9 +22,13 @@ cp html/*html static/
 find assets -name "favicon*.ico" -or -name "favicon*.png" -exec cp "{}" static/ \;
 
 if [ "$1" == "check" ]; then
-   cargo clean -p "$(cargo read-manifest | jq -r '.name')"
-   cargo clippy -- -D warnings
-   cargo fmt -- --check
+    # We need standard rustc options for tests
+    unset RUSTFLAGS
+    
+    cargo test
+    cargo clean -p "$(cargo read-manifest | jq -r '.name')"
+    cargo clippy -- -D warnings
+    cargo fmt -- --check
 elif [ "$1" == "audit" ]; then
     cargo audit
 fi

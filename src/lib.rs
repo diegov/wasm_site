@@ -151,7 +151,7 @@ impl Component for Model {
                 let aside_class = if self.show_aside { "" } else { "removed" };
 
                 // We'll track mouse movement to perform some tricks later
-                let onmousemove = &self.link.callback(move |x: MouseEvent| Msg::MouseMove(x));
+                let onmousemove = &self.link.callback(Msg::MouseMove);
 
                 html! {
                     <body onmousemove=onmousemove>

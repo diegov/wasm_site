@@ -6,7 +6,7 @@ Also uses [Normalize CSS](https://github.com/necolas/normalize.css) and [Holiday
 
 # Building
 
-Tested with rust 1.47.0, see [Rustup](https://rustup.rs/) for installation.
+Tested with rust 1.48.0, see [Rustup](https://rustup.rs/) for installation.
 
 First, install wasm-pack:
 

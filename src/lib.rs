@@ -251,7 +251,7 @@ impl Model {
 animation: ",
         );
         style.push_str(&animation_name);
-        style.push_str(" ");
+        style.push(' ');
         style.push_str(&total_animation_time.to_string());
         style.push_str(
             "s ease-in-out infinite;

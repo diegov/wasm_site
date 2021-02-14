@@ -63,6 +63,10 @@ panic = 'abort'
 codegen-units = 1
 opt-level = 'z'
 lto = true
+debug = false
+rpath = false
+debug-assertions = false
+incremental = false
 
 [package.metadata.wasm-pack.profile.release]
-wasm-opt = ['--strip-debug', '--strip-dwarf', '-Os']
+wasm-opt = ['--strip-debug', '--strip-dwarf', '-Oz']

@@ -95,7 +95,9 @@ fn normalise<S: AsRef<str>>(text: S) -> String {
 fn abbreviate_path(mut url: Url, names: &[&str]) -> R {
     let normalised_names: Vec<String> = names.iter().map(normalise).collect();
 
-    let path = percent_decode(url.path().as_bytes()).decode_utf8().unwrap();
+    let path = percent_decode(url.path().as_bytes())
+        .decode_utf8()
+        .map_err(|_| "Failed to decode UTF8")?;
     let components = split_path(path.as_ref());
     let mut remaining_names = normalised_names;
 

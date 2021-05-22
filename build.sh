@@ -10,7 +10,7 @@ cd "$THIS_SCRIPT_DIR"
 # to be able to use Xargo + 'panic_immediate_abort' for std.
 export RUSTFLAGS="-C debuginfo=0 -C force-unwind-tables=no -C panic=abort -C embed-bitcode=no -Clinker-plugin-lto"
 
-wasm-pack build --release --no-typescript --target web --out-name wasm --out-dir ./static
+mkdir -p static
 
 if [ -f assets/sites.json ]; then
     cp assets/sites.json static/sites.json
@@ -18,10 +18,12 @@ else
     cp sites.demo.json static/sites.json
 fi
 
-cp css/*.css static/
-cp html/*html static/
+wasm-pack build --release --no-typescript --target web --out-name wasm --out-dir ./static
 
-find assets -name "favicon*.ico" -or -name "favicon*.png" -exec cp "{}" static/ \;
+cp css/*.css static/
+
+find assets \( -name "favicon*.ico" -or -name "favicon*.png" \) \
+     -exec cp "{}" static/ \;
 
 if [ "$1" == "check" ]; then
     # We need standard rustc options for tests

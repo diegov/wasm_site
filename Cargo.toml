@@ -13,10 +13,21 @@ crate-type = ["cdylib", "rlib"]
 [dev-dependencies]
 proptest = "0.10.*"
 
+[build-dependencies]
+handlebars = "3.5.5"
+
+[build-dependencies.serde]
+version = "1.0.*"
+default-features = false
+
+[build-dependencies.serde_json]
+version = "1.0.*"
+default-features = false
+
 [dependencies]
-yew = "0.17.*"
+yew = "0.18.*"
 wasm-bindgen = "0.2"
-wee_alloc = "0.4.5"
+wee_alloc = "0.4.*"
 text_io = "0.1.*"
 percent-encoding = "*"
 unidecode = "0.3.*"
@@ -35,15 +46,11 @@ features = [
   'WebGlRenderingContext',
   'WebGlShader',
   'WebGlUniformLocation',
-  'Document',
-  'Element',
   'HtmlHeadElement',
   'HtmlStyleElement',
-  'HtmlElement',
   'HtmlCollection',
   'Performance',
   'DomRect',
-  'Range',
 ]
 
 [dependencies.anyhow]
@@ -67,6 +74,7 @@ debug = false
 rpath = false
 debug-assertions = false
 incremental = false
+overflow-checks = false
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = ['--strip-debug', '--strip-dwarf', '-Oz']

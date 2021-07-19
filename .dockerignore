@@ -1,0 +1,9 @@
+target
+docker_target
+*preview*.html
+static
+Dockerfile
+proptest-regressions
+.git
+
+

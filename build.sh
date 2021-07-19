@@ -3,6 +3,13 @@
 set -e
 set -o pipefail
 
+if [ "$1" == "docker" ]; then
+    shift;
+    rust_version=$(tr -d '\n' <rust-toolchain)
+    DOCKER_BUILDKIT=1 docker build --build-arg rust_version="$rust_version" --file Dockerfile --output docker_target . "$@"
+    exit $?
+fi
+
 THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$THIS_SCRIPT_DIR"
 

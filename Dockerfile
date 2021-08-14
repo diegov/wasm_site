@@ -1,5 +1,5 @@
 ARG rust_version
-FROM rust:${rust_version}-bullseye as buildenv
+FROM docker.io/rust:${rust_version}-bullseye
 MAINTAINER Diego Veralli "diego@diegoveralli.com"
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -17,6 +17,9 @@ WORKDIR /s
 RUN cargo install wasm-pack
 RUN cargo install wasm-snip
 
+# This is done automatically when calling wasm-pack, but this way we cache a layer
+RUN rustup target add wasm32-unknown-unknown
+
 COPY . /s
 
 RUN ./build.sh
@@ -25,6 +28,4 @@ RUN ./minify.sh static/wasm_bg.wasm
 RUN ./snip.sh static/wasm_bg.wasm tmp.wasm
 RUN mv tmp.wasm static/wasm_bg.wasm
 
-FROM scratch AS export-stage
-
-COPY --from=buildenv /s/static/ .
+ENV BUILD_OUTPUT_DIR /s/static

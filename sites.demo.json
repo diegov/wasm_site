@@ -1,15 +1,16 @@
 {
   "name": "Person FromFamily",
+  "homepage": "https://www.example.com",
+  "source": "https://github.com/diegov/wasm_site",
   
   "sites": [
-    "https://githubs.coms/12345601",
-    "https://www.linkedinning.comm/in/120231848159",
-    "https://stackovercooked.com/users/s120231848159",
-    "https://twister.com/s120231848159",
-    "https://keybasket.io/keybaketu1283180153",
-    "https://gotlab.com/u1283180153",
-    "https://batbucket.org/1283180153/"
-  ],
-
-  "source": "https://github.com/diegov/wasm_site"
+    { "me": true, "url": "https://githubs.coms/12345601" },
+    { "me": true, "url": "https://www.linkedinning.comm/in/120231848159" },
+    { "me": true, "url": "https://stackovercooked.com/users/s120231848159" },
+    { "me": true, "url": "https://twister.com/s120231848159" },
+    { "me": true, "url": "https://keybasket.io/keybaketu1283180153" },
+    { "me": true, "url": "https://gotlab.com/u1283180153" },
+    { "me": true, "url": "https://batbucket.org/1283180153/" },
+    { "me": false, "url": "https://example.com/" }
+  ]
 }

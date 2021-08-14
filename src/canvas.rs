@@ -115,13 +115,13 @@ impl Model {
             .as_ref()
             .expect("Shader program uninitialised!");
 
-        gl.use_program(Some(&shader_program));
+        gl.use_program(Some(shader_program));
 
-        let position = gl.get_attrib_location(&shader_program, "a_position") as u32;
+        let position = gl.get_attrib_location(shader_program, "a_position") as u32;
         gl.vertex_attrib_pointer_with_i32(position, 2, GL::FLOAT, false, 0, 0);
         gl.enable_vertex_attrib_array(position);
 
-        let time_uni = gl.get_uniform_location(&shader_program, "time");
+        let time_uni = gl.get_uniform_location(shader_program, "time");
         gl.uniform1f(time_uni.as_ref(), ((timestamp as f64) / 1000.0f64) as f32);
 
         let range = self
@@ -133,15 +133,15 @@ impl Model {
         let relative_x = ((self.props.cursor.0 as f64) - range.x()) as f32;
         let relative_y = ((self.props.cursor.1 as f64) - range.y()) as f32;
 
-        let cursor_uni = gl.get_uniform_location(&shader_program, "cursor");
+        let cursor_uni = gl.get_uniform_location(shader_program, "cursor");
         gl.uniform2f(cursor_uni.as_ref(), relative_x, relative_y);
 
-        let resolution_uni = gl.get_uniform_location(&shader_program, "resolution");
+        let resolution_uni = gl.get_uniform_location(shader_program, "resolution");
         // I think this might be the default for canvas? It's doesn't match the html element size,
         // but it's the range of gl_FragCoord inside the shader.
         gl.uniform2f(resolution_uni.as_ref(), 300.0, 150.0);
 
-        let element_size_uni = gl.get_uniform_location(&shader_program, "element_size");
+        let element_size_uni = gl.get_uniform_location(shader_program, "element_size");
         gl.uniform2f(
             element_size_uni.as_ref(),
             range.width() as f32,
@@ -179,7 +179,7 @@ fn compile_shader(gl: &GL, code: &str, shader_type: u32) -> WebGlShader {
     let shader = gl
         .create_shader(shader_type)
         .expect("Failed to create shader");
-    gl.shader_source(&shader, &code);
+    gl.shader_source(&shader, code);
     gl.compile_shader(&shader);
 
     let error_log = gl.get_shader_info_log(&shader);

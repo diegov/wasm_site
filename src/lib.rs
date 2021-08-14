@@ -43,15 +43,21 @@ pub enum Msg {
 }
 
 #[derive(Deserialize)]
+pub struct Site {
+    url: String,
+    me: bool,
+}
+
+#[derive(Deserialize)]
 pub struct UserInfoResponse {
     name: String,
-    sites: Vec<String>,
+    sites: Vec<Site>,
     source: String,
 }
 
 pub struct UserInfo {
     name: String,
-    sites: Vec<(String, bool, f64)>,
+    sites: Vec<(Site, bool, f64)>,
     source: String,
 }
 
@@ -132,7 +138,7 @@ impl Component for Model {
                 let sites = if !data.sites.is_empty() {
                     html! {
                         <ul>
-                        { data.sites.iter().enumerate().map(|i| self.render_item(i, &name_parts)).collect::<Html>() }
+                        { data.sites.iter().enumerate().map(|site| self.render_item(site, &name_parts)).collect::<Html>() }
                         </ul>
                     }
                 } else {
@@ -207,8 +213,11 @@ impl Model {
         let url = "/sites.json";
 
         let request = Request::get(url)
+            .header("pragma", "no-cache")
+            .header("cache-control", "no-cache")
             .body(Nothing)
             .expect("Failed to create request");
+
         FetchService::fetch(request, handler).expect("Failed to create fetch task")
     }
 
@@ -319,7 +328,7 @@ li a {
 
         if should_render {
             if let Some(user_info) = &self.user_info {
-                self.update_document(&user_info);
+                self.update_document(user_info);
             }
         }
 
@@ -328,16 +337,33 @@ li a {
 
     fn render_item(
         &self,
-        (idx, (url_string, is_deleted, _)): (usize, &(String, bool, f64)),
+        (idx, (site, is_deleted, _)): (usize, &(Site, bool, f64)),
         name_parts: &[&str],
     ) -> Html {
-        let title = urltools::abbreviate_max(url_string, &name_parts, Some(30))
+        let url_string = &site.url;
+        let title = urltools::abbreviate_max(url_string, name_parts, Some(30))
             .expect("Can't abbreviate url");
 
         let css_class = if *is_deleted { "removed" } else { "" };
 
+        let button = html! {
+            <button onclick=self.link.callback(move |_| Msg::Remove(idx)) >{ "Don't care" }</button>
+        };
+
+        let link = if site.me {
+            html! {
+                <a href={ url_string.clone() } rel={ "me" }>{ title }</a>
+            }
+        } else {
+            html! {
+                <a href={ url_string.clone() }>{ title }</a>
+            }
+        };
+
         html! {
-            <li class={ css_class } ><a href={url_string.clone()}>{ title }</a> { DEFAULT_WS } <button onclick=self.link.callback(move |_| Msg::Remove(idx)) >{ "Don't care" }</button></li>
+            <li class={ css_class }>
+            { link } { DEFAULT_WS } { button }
+            </li>
         }
     }
 }
@@ -366,7 +392,7 @@ fn set_style(doc: &Document, style: &str) {
             }
         }
 
-        if let Ok(element) = doc.create_element(&"style") {
+        if let Ok(element) = doc.create_element("style") {
             element
                 .set_attribute(STYLE_ID_ATTRIBUTE, ANIMATION_STYLE_ID)
                 .expect("can't set attribute");
@@ -382,8 +408,8 @@ fn map_response(response: UserInfoResponse) -> UserInfo {
         name: response.name,
         sites: response
             .sites
-            .iter()
-            .map(|s| (s.clone(), false, -1.0))
+            .into_iter()
+            .map(|s| (s, false, -1.0))
             .collect(),
         source: response.source,
     }

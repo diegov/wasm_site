@@ -4,11 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{title}}'s Personal Site</title>
+    <link rel="me" href="{{homepage}}"></link>
     <link rel="stylesheet" href="normalize.css"></link>
     <link rel="stylesheet" href="holiday.css"></link>
     <link rel="stylesheet" href="site.css"></link>
     <link rel="icon" type="image/png" sizes="196x196" href="favicon-196.png">
     <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- This is starting to make the entire yew implementation redundant... -->
+    {{#each sites}}{{#if this.me}}<link rel="me" href="{{this.url}}"></link>{{/if}}
+    {{/each}}
 
     <script type="module">
       setTimeout(function() {

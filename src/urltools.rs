@@ -22,7 +22,7 @@ fn abbreviate_impl<'a>(
 ) -> R {
     let url_string = url_string;
 
-    let mut url = match Url::parse(&url_string) {
+    let mut url = match Url::parse(url_string) {
         Ok(url) => url,
         Err(_) => return Err("Failed to parse URL"),
     };

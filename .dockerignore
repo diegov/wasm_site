@@ -5,5 +5,4 @@ static
 Dockerfile
 proptest-regressions
 .git
-
-
+scripts/build-docker.sh

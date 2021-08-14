@@ -38,6 +38,7 @@ fn main() -> io::Result<()> {
     fs::copy(sites_to_use, "static/sites.json")?;
 
     let mut handlebars = Handlebars::new();
+    handlebars.set_strict_mode(true);
 
     let source = read_file(&["html", "index.html.handlebars"]).unwrap();
     assert!(handlebars.register_template_string("t1", source).is_ok());

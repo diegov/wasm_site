@@ -12,13 +12,14 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v2
-    - uses: jetli/wasm-pack-action@v0.3.0
+    - uses: abbbi/github-actions-tune@0b48641ceb645d4ad4573b0d17b770d85770f9c7
+    - uses: jetli/wasm-pack-action@f98777369a49686b132a9e8f0fdd59837bf3c3fd
       with:
-        version: 'v0.9.1'
+        version: 'v0.10.0'
     - run: rustup component add rustfmt
     - run: rustup component add clippy
     - run: sudo apt-get install -y --no-install-recommends jq

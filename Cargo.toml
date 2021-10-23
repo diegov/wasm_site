@@ -11,10 +11,10 @@ edition = "2018"
 crate-type = ["cdylib", "rlib"]
 
 [dev-dependencies]
-proptest = "0.10.*"
+proptest = "1.*"
 
 [build-dependencies]
-handlebars = "3.5.5"
+handlebars = "4.1.*"
 
 [build-dependencies.serde]
 version = "1.0.*"

@@ -20,10 +20,11 @@ pub struct UserInfoResponse {
 }
 
 fn main() -> io::Result<()> {
+    const STATIC_DIR: &str = "static";
     const CUSTOM_SITES: &str = "assets/sites.json";
     const DEMO_SITES: &str = "sites.demo.json";
 
-    fs::create_dir_all("static")?;
+    fs::create_dir_all(STATIC_DIR)?;
 
     let sites_to_use = if Path::new(CUSTOM_SITES).exists() {
         CUSTOM_SITES
@@ -35,7 +36,7 @@ fn main() -> io::Result<()> {
 
     println!("cargo:rerun-if-changed={}", sites_to_use);
 
-    fs::copy(sites_to_use, "static/sites.json")?;
+    fs::copy(sites_to_use, Path::new(STATIC_DIR).join("sites.json"))?;
 
     let mut handlebars = Handlebars::new();
     handlebars.set_strict_mode(true);
@@ -43,13 +44,13 @@ fn main() -> io::Result<()> {
     let source = read_file(&["html", "index.html.handlebars"]).unwrap();
     assert!(handlebars.register_template_string("t1", source).is_ok());
 
-    let json = read_file(&["static", "sites.json"]).unwrap();
+    let json = read_file(&[STATIC_DIR, "sites.json"]).unwrap();
 
     let result: UserInfoResponse = serde_json::from_str(&json).unwrap();
 
     let final_html = handlebars.render("t1", &result).unwrap();
 
-    let dest_path = get_path(&["static", "index.html"]);
+    let dest_path = get_path(&[STATIC_DIR, "index.html"]);
 
     fs::write(&dest_path, final_html).unwrap();
     println!("cargo:rerun-if-changed=build.rs");

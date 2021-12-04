@@ -15,14 +15,18 @@ fi
 # to be able to use Xargo + 'panic_immediate_abort' for std.
 export RUSTFLAGS="-C debuginfo=0 -C force-unwind-tables=no -C panic=abort -C embed-bitcode=no -Clinker-plugin-lto"
 
-wasm-pack build --release --no-typescript --target web --out-name wasm --out-dir ./static
+STATIC_DIR=./static
 
-cp css/*.css static/
+wasm-pack build --release --no-typescript --target web --out-name wasm --out-dir "$STATIC_DIR"
+
+cp css/*.css "$STATIC_DIR"
 
 find assets \( -name "favicon*.ico" -or -name "favicon*.png" \) \
-     -exec cp "{}" static/ \;
+     -exec cp "{}" "$STATIC_DIR" \;
 
 if [ "$1" == "check" ]; then
+    tidy --doctype html5 --show-meta-change yes "$STATIC_DIR"/*html >/dev/null
+    
     # We need standard rustc options for tests
     unset RUSTFLAGS
     

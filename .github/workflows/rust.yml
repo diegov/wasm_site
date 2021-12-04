@@ -22,6 +22,6 @@ jobs:
         version: 'v0.10.0'
     - run: rustup component add rustfmt
     - run: rustup component add clippy
-    - run: sudo apt-get install -y --no-install-recommends jq
+    - run: sudo apt-get install -y --no-install-recommends jq tidy
     - name: Build
       run: ./build.sh check

@@ -9,6 +9,7 @@ cd "$THIS_SCRIPT_DIR"
 if [ "$1" == "docker" ]; then
     shift
     ./scripts/build-docker.sh "$@"
+    exit $?
 fi
 
 # I think this is all the size reduction possible before switching to nightly

@@ -14,7 +14,8 @@ COPY ./rust-toolchain /s/
 
 WORKDIR /s
 
-RUN cargo install wasm-pack
+RUN apt-get install -y libssl-dev
+RUN cargo install wasm-pack --no-default-features
 RUN cargo install wasm-snip
 
 # This is done automatically when calling wasm-pack, but this way we cache a layer
@@ -25,7 +26,6 @@ COPY . /s
 RUN ./build.sh
 
 RUN ./minify.sh static/wasm_bg.wasm
-RUN ./snip.sh static/wasm_bg.wasm tmp.wasm
-RUN mv tmp.wasm static/wasm_bg.wasm
+RUN ./snip.sh static/wasm_bg.wasm
 
 ENV BUILD_OUTPUT_DIR /s/static

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+ssh_destination="$1"
+
+if [ "$ssh_destination" == "" ]; then
+    echo "Usage: $0 [SSH_DESTINATION]" >&2
+    exit 1
+fi
+
+OUTDIR="docker_target/static/"
+
+./build.sh check &&
+    ./build.sh docker &&
+    chmod o+r "$OUTDIR"/* &&
+    scp -r "$OUTDIR"/* "$ssh_destination"

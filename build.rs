@@ -1,3 +1,4 @@
+use chrono::Utc;
 use handlebars::Handlebars;
 use serde::{Deserialize, Serialize};
 use std::env;
@@ -17,10 +18,12 @@ pub struct UserInfoResponse {
     name: String,
     homepage: String,
     sites: Vec<Site>,
+    last_modified: Option<String>,
 }
 
+const STATIC_DIR: &str = "static";
+
 fn main() -> io::Result<()> {
-    const STATIC_DIR: &str = "static";
     const CUSTOM_SITES: &str = "assets/sites.json";
     const DEMO_SITES: &str = "sites.demo.json";
 
@@ -41,22 +44,47 @@ fn main() -> io::Result<()> {
     let mut handlebars = Handlebars::new();
     handlebars.set_strict_mode(true);
 
-    let source = read_file(&["html", "index.html.handlebars"]).unwrap();
-    assert!(handlebars.register_template_string("t1", source).is_ok());
-
     let json = read_file(&[STATIC_DIR, "sites.json"]).unwrap();
+    let mut user_info: UserInfoResponse = serde_json::from_str(&json).unwrap();
+    user_info.last_modified = Some(Utc::now().to_rfc3339());
 
-    let result: UserInfoResponse = serde_json::from_str(&json).unwrap();
+    render_template_to_file(
+        &mut handlebars,
+        "html",
+        "index.html.handlebars",
+        "index.html",
+        &user_info,
+    );
 
-    let final_html = handlebars.render("t1", &result).unwrap();
+    render_template_to_file(
+        &mut handlebars,
+        "html",
+        "sitemap.xml.handlebars",
+        "sitemap.xml",
+        &user_info,
+    );
 
-    let dest_path = get_path(&[STATIC_DIR, "index.html"]);
-
-    fs::write(&dest_path, final_html).unwrap();
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed=html/*");
 
     Ok(())
+}
+
+fn render_template_to_file(
+    handlebars: &mut Handlebars,
+
+    directory: &str,
+    template_filename: &str,
+    output_filename: &str,
+    user_info: &UserInfoResponse,
+) {
+    let source = read_file(&[directory, template_filename]).unwrap();
+    assert!(handlebars
+        .register_template_string(template_filename, source)
+        .is_ok());
+    let final_text = handlebars.render(template_filename, &user_info).unwrap();
+    let dest_path = get_path(&[STATIC_DIR, output_filename]);
+    fs::write(&dest_path, final_text).unwrap();
 }
 
 fn read_file(path: &[&str]) -> io::Result<String> {

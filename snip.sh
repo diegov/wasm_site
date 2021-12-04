@@ -3,7 +3,6 @@
 set -e
 
 INPUT="$1"
-OUTPUT="$2"
 
 wasm-snip --snip-rust-fmt-code \
           --snip-rust-panicking-code \
@@ -11,4 +10,5 @@ wasm-snip --snip-rust-fmt-code \
           "$INPUT"
 
 wasm-strip "$INPUT"
-wasm-opt -o "$OUTPUT" -Oz --dce "$INPUT"
+wasm-opt -o "$INPUT".tmp.wasm -Os --dce "$INPUT"
+mv "$INPUT".tmp.wasm "$INPUT"

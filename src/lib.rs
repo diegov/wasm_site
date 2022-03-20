@@ -1,3 +1,5 @@
+#![allow(clippy::unused_unit)]
+
 extern crate wee_alloc;
 
 #[global_allocator]

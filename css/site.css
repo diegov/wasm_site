@@ -73,8 +73,19 @@ footer {
     bottom: 0px;
     width: 100%;
     text-align: center;
-    background-color: rgb(219, 219, 219);
     z-index: 10;
+}
+
+@media (prefers-color-scheme: dark) {
+    footer {
+        background-color: rgb(52, 52, 52);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    footer {
+        background-color: rgb(219, 219, 219);
+    }
 }
 
 footer a {

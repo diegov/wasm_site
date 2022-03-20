@@ -16,9 +16,12 @@ fi
 # to be able to use Xargo + 'panic_immediate_abort' for std.
 export RUSTFLAGS="-C debuginfo=0 -C force-unwind-tables=no -C panic=abort -C embed-bitcode=no -Clinker-plugin-lto"
 
+STATIC_TMP=$(mktemp -d)
 STATIC_DIR=./static
 
-wasm-pack build --release --no-typescript --target web --out-name wasm --out-dir "$STATIC_DIR"
+wasm-pack build --release --no-typescript --target web --out-name wasm --out-dir "$STATIC_TMP"
+
+cp -r "$STATIC_TMP"/* "$STATIC_DIR"
 
 cp css/*.css "$STATIC_DIR"
 
